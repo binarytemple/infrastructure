@@ -3,3 +3,7 @@
 [webservers]
 #revoltingdigits.com ansible_ssh_user=root
 binarytemple.co.uk ansible_ssh_user=root
+
+[url-chooser]
+
+96.126.108.59 ansible_ssh_user=root

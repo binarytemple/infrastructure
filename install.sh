@@ -26,6 +26,7 @@ function installfile() {
 [[ -f /usr/bin/pip ]] && pip-python install ansible
 
 
-find files -type f | sed -e 's/files//' | while read i 
+#install all files in 'files' sub-directory, with the exception of swp files and cruft.
+find files -type f  -a \( -not -regex ".*\.swp" \)     | sed -e 's/files//' | while read i 
 do installfile $i 
 done
