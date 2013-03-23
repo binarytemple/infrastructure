@@ -1,0 +1,17 @@
+---
+- include: bottle.yml
+- hosts: url-chooser
+  user: root
+  tasks:
+  - name: copy url-chooser project to filesystem location
+    action: file path=/svc owner=foo group=foo mode=0644 state=directory
+    action: git repo="git@bitbucket.org:sentimental/url-chooser.git" dest=/srv/url-chooser version=master
+  - name: ensure bottle is at latest version
+    action: pip name=bottle use_mirrors=no 
+    notify:
+    - installed bottle
+  - name: Copy upstart script into location
+    action: copy src=/common/ansible-conf/all-remote/etc/init/url-chooser.conf  dest=/etc/init/url-chooser.conf owner=root group=root mode=644
+  handlers:
+    - name: installed bottle
+      action: mail msg='${ansible_hostname} installed' subject='Ansible-report Bottle installation' to='irishjava@gmail.com' 

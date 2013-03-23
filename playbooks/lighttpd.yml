@@ -1,5 +1,6 @@
 ---
-- hosts: webservers
+- include: base.yml
+- hosts: all
   vars:
     http_port: 80
     max_clients: 200
@@ -8,13 +9,9 @@
   - name: ensure lighttpd is at the latest version
     action: apt pkg=lighttpd state=latest
     notify:
-    - restart lighttp
-#  - name: write the apache config file
-#    action: template src=/files/tmp/srv/httpd.j2 dest=/etc/httpd.conf
-#    notify:
-#    - restart apache
+    - restart lighttpd
   - name: ensure lighttpd is running
     action: service name=lighttpd state=started
   handlers:
-    - name: upgraded lighttpd
+    - name: restart lighttpd
       action: service name=lighttpd state=restarted

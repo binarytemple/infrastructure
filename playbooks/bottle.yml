@@ -1,12 +1,8 @@
 ---
+- include: base.yml
 - hosts: url-chooser
-  vars:
-    http_port: 80
-    max_clients: 200
   user: root
   tasks:
-  - name: ensure mail is installed 
-    action: apt name=mailutils
   - name: install python pip
     action: apt name=python-pip
   - name: ensure bottle is at latest version
@@ -17,5 +13,3 @@
     - name: installed bottle
       action: mail msg='${ansible_hostname} installed' subject='Ansible-report Bottle installation' to='irishjava@gmail.com' 
 #      Doesn't work
-#      action: shell "echo 'succesfully installed bottle' | /usr/bin/mail irishjava@gmail.com -s 'Bottle install'"
-
