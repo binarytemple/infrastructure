@@ -1,6 +1,6 @@
 ---
 - include: bottle.yml
-- include: svc.yml
+- include: srv.yml
 - hosts: url-chooser
   user: root
   tasks:
