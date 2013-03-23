@@ -1,5 +1,9 @@
 #!/bin/sh
 
+if [[ ! $(id -u) = 0 ]] 
+    then echo "This script should run as root" && exit 1 
+fi
+
 function installfile() {
     fname=$1
     dname=$(echo $fname | sed -e 's_\(^.*\/\).*_\1_')
@@ -17,6 +21,10 @@ function installfile() {
         echo "Bad filename match [ $fname ] , name must start with / "    
     fi
 }
+
+[[ -f /usr/bin/pip-python ]] && pip-python install ansible
+[[ -f /usr/bin/pip ]] && pip-python install ansible
+
 
 find files -type f | sed -e 's/files//' | while read i 
 do installfile $i 
