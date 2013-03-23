@@ -5,7 +5,9 @@
   user: root
   tasks:
   - name: Install the urlchooser user
-    action: user name=urlchooser home=/srv/url-chooser state=present system=yes
+    action: user name=urlchooser home=/srv/urlchooser state=present system=yes
+  - name: copy url-chooser project to filesystem location
+    action: git repo="git@bitbucket.org:sentimental/url-chooser.git" dest=/srv/urlchooser/repo version=master
   - name: ensure bottle is at latest version
     action: pip name=bottle use_mirrors=no 
     notify:
@@ -13,7 +15,7 @@
   - name: Copy upstart script into location
     action: copy src=/common/ansible-conf/all-remote/etc/init/url-chooser.conf  dest=/etc/init/url-chooser.conf owner=root group=root mode=644
   - name: Ensure service running
-    action: name=url-chooser state=started   
+    action: service name=url-chooser state=started   
   handlers:
     - name: installed bottle
       action: mail msg='${ansible_hostname} installed' subject='Ansible-report Bottle installation' to='irishjava@gmail.com' 
