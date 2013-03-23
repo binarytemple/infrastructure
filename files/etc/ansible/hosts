@@ -1,0 +1,5 @@
+#binarytemple.co.uk  ansible_ssh_user=root
+
+[webservers]
+#revoltingdigits.com ansible_ssh_user=root
+binarytemple.co.uk ansible_ssh_user=root
