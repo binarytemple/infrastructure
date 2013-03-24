@@ -9,15 +9,15 @@
   - name: install git 
     action: apt pkg=git state=installed  
   - name: Copy root rsa into location
-    action: copy src="/common/ansible-conf/all-remote/root/.ssh/id_rsa.deployer" dest="/root/.ssh/id_rsa.deployer" owner=root group=root mode=600
+    action: copy src="/common/ansible-conf/remote/root/.ssh/id_rsa.deployer" dest="/root/.ssh/id_rsa.deployer" owner=root group=root mode=600
   - name: Copy root rsa files into location
-    action: copy src="/common/ansible-conf/all-remote/root/.ssh/id_rsa.deployer.pub" dest="/root/.ssh/id_rsa.deployer.pub" owner=root group=root mode=600
+    action: copy src="/common/ansible-conf/remote/root/.ssh/id_rsa.deployer.pub" dest="/root/.ssh/id_rsa.deployer.pub" owner=root group=root mode=600
   - name: Ensure Bitbucket compatible .ssh/config is present
-    action: copy src="/common/ansible-conf/all-remote/root/.ssh/config" dest="/root/.ssh/config" owner=root group=root mode=600
+    action: copy src="/common/ansible-conf/remote/root/.ssh/config" dest="/root/.ssh/config" owner=root group=root mode=600
   - name: Ensure Bitbucket compatible .ssh/known_hosts is present
     notify:
     - updated ssh
-    action: copy src="/common/ansible-conf/all-remote/root/.ssh/known_hosts" dest="/root/.ssh/known_hosts" owner=root group=root mode=600
+    action: copy src="/common/ansible-conf/remote/root/.ssh/known_hosts" dest="/root/.ssh/known_hosts" owner=root group=root mode=600
     notify:
     - updated ssh
   handlers:

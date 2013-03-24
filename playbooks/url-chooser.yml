@@ -13,7 +13,7 @@
     notify:
     - installed bottle
   - name: Copy upstart script into location
-    action: copy src=/common/ansible-conf/all-remote/etc/init/url-chooser.conf  dest=/etc/init/url-chooser.conf owner=root group=root mode=644
+    action: copy src=/common/ansible-conf/remote/etc/init/url-chooser.conf  dest=/etc/init/url-chooser.conf owner=root group=root mode=644
   - name: Ensure service running
     action: service name=url-chooser state=started   
   handlers:
