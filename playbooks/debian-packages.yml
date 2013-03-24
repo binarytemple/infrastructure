@@ -1,0 +1,17 @@
+---
+- hosts: all
+  user: root
+  vars:
+  - is_debian: "'${ansible_distribution}' == 'Debian'"
+  tasks:
+  - name: install multiple packages
+    action: apt name=$item state=installed
+    with_items:
+    - vim 
+    - netcat 
+    - ngrep
+    - tcpdump 
+    - emacs 
+    - zsh 
+    - tmux
+    only_if: "$is_debian"

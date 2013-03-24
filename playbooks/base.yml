@@ -1,7 +1,11 @@
 ---
+- include: debian-packages.yml 
+- include: ubuntu-packages.yml  
 - hosts: all
   user: root
   tasks:
+  - name: add templated marker file
+    action: template src=/common/ansible-conf/remote/etc/marker.j2 dest=/etc/marker.ansible
   - name: ensure mail is installed 
     action: apt name=mailutils
     notify:
