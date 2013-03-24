@@ -8,21 +8,23 @@
     - installed mail
   - name: install git 
     action: apt pkg=git state=installed  
-  - name: Copy root rsa into location
-    action: copy src="/common/ansible-conf/remote/root/.ssh/id_rsa.deployer" dest="/root/.ssh/id_rsa.deployer" owner=root group=root mode=600
-  - name: Copy root rsa files into location
-    action: copy src="/common/ansible-conf/remote/root/.ssh/id_rsa.deployer.pub" dest="/root/.ssh/id_rsa.deployer.pub" owner=root group=root mode=600
-  - name: Ensure Bitbucket compatible .ssh/config is present
-    action: copy src="/common/ansible-conf/remote/root/.ssh/config" dest="/root/.ssh/config" owner=root group=root mode=600
   - name: Ensure Bitbucket compatible .ssh/known_hosts is present
+    action: copy 
+            src="/common/ansible-conf/remote/root/.ssh/known_hosts" 
+            dest="/root/.ssh/known_hosts" 
+            owner=root group=root mode=600
     notify:
     - updated ssh
-    action: copy src="/common/ansible-conf/remote/root/.ssh/known_hosts" dest="/root/.ssh/known_hosts" owner=root group=root mode=600
+  - name: Generate ssh public/private keys for the root user, if necessary.
+    action: user name=root generate_ssh_key=yes ssh_key_bits=2048   
     notify:
-    - updated ssh
+    - generated ssh keys
   handlers:
     - name: updated ssh
       action: mail msg='${ansible_hostname} ssh updated' subject='Ansible-report Bottle installation' to='irishjava@gmail.com' 
+  handlers:
+    - name: generated ssh keys
+      action: mail msg='${ansible_hostname} ssh keys generated' subject='Ansible-report ssh keys generated ' to='irishjava@gmail.com'  attach="/root/.ssh/id_rsa.pub"
     - name: installed mail
       action: mail msg='${ansible_hostname} installed' subject='Ansible-report Bottle installation' to='irishjava@gmail.com' 
 
