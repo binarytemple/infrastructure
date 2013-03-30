@@ -2,10 +2,12 @@
 - include: debian-packages.yml 
 - include: ubuntu-packages.yml  
 - hosts: all
+  vars_files:
+    - settings.yml
   user: root
   tasks:
   - name: add templated marker file
-    action: template src=/common/ansible-conf/remote/etc/marker.j2 dest=/etc/marker.ansible
+    action: template src=../remote/etc/marker.j2 dest=/etc/marker.ansible    
   - name: ensure mail is installed 
     action: apt name=mailutils
     notify:
@@ -14,7 +16,7 @@
     action: apt pkg=git state=installed  
   - name: Ensure Bitbucket compatible .ssh/known_hosts is present
     action: copy 
-            src="/common/ansible-conf/remote/root/.ssh/known_hosts" 
+            src="../remote/root/.ssh/known_hosts" 
             dest="/root/.ssh/known_hosts" 
             owner=root group=root mode=600
     notify:

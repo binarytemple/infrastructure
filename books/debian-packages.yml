@@ -14,4 +14,4 @@
     - emacs 
     - zsh 
     - tmux
-    only_if: "$is_debian"
+    only_if: $is_debian

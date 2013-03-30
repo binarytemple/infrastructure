@@ -7,14 +7,33 @@
     action: user name=binarytemple home=/srv/binarytemple state=present system=yes
   - name: copy binarytemple.co.uk project to filesystem location
     action: git repo="git@bitbucket.org:sentimental/binarytemple.co.uk.git" dest=/srv/binarytemple/repo version=master
-#  - name: ensure bottle is at latest version
-#    action: pip name=bottle use_mirrors=no 
-#    notify:
-#    - installed bottle
-#  - name: Copy upstart script into location
-#    action: copy src=/common/ansible-conf/remote/etc/init/url-chooser.conf  dest=/etc/init/url-chooser.conf owner=root group=root mode=644
-#  - name: Ensure service running
-#    action: service name=url-chooser state=started   
-#  handlers:
-#    - name: installed bottle
-#      action: mail msg='${ansible_hostname} installed' subject='Ansible-report Bottle installation' to='irishjava@gmail.com' 
+  - name: symbolically link /srv/binarytemple.co.uk to /srv/binarytemple/repo/srv 
+    action: file src=/srv/binarytemple/repo/srv dest=/srv/binarytemple.co.uk owner=root group=root state=link 
+  - name: create etc lightttpd directories 
+    action: file path=$item mode=0755 state=directory
+    with_items: 
+    - /etc/lighttpd
+    - /etc/lighttpd/conf-available
+    - /etc/lighttpd/conf-enabled
+  - name: install multiple templates
+    action: template src="../remote/etc/lighttpd/conf-available/${item[0]}" dest="/etc/lighttpd/conf-available/${item[1]}" owner=bin group=root mode=0644
+    with_items:
+    - ['05-auth.conf.j2','05-auth.conf']
+    - ['10-accesslog.conf.j2','10-accesslog.conf']
+    - ['10-cgi.conf.j2','10-cgi.conf']
+    - ['10-evasive.conf.j2','10-evasive.conf']
+    - ['10-evhost.conf.j2','10-evhost.conf']
+    - ['10-expire.conf.j2','10-expire.conf']
+    - ['10-fastcgi.conf.j2','10-fastcgi.conf']
+    - ['10-flv-streaming.conf.j2','10-flv-streaming.conf']
+    - ['10-no-www.conf.j2','10-no-www.conf']
+    - ['10-proxy.conf.j2','10-proxy.conf']
+    - ['10-rrdtool.conf.j2','10-rrdtool.conf']
+    - ['10-simple-vhost.conf.j2','10-simple-vhost.conf']
+    - ['10-ssi.conf.j2','10-ssi.conf']
+    - ['10-ssl.conf.j2','10-ssl.conf']
+    - ['10-status.conf.j2','10-status.conf']
+    - ['10-userdir.conf.j2','10-userdir.conf']
+    - ['10-usertrack.conf.j2','10-usertrack.conf']
+    - ['15-fastcgi-php.conf.j2','15-fastcgi-php.conf']
+    - ['90-debian-doc.conf.j2','90-debian-doc.conf']
