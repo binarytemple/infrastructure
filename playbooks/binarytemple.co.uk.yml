@@ -1,0 +1,20 @@
+---
+- include: srv.yml
+- hosts: binarytemple
+  user: root
+  tasks:
+  - name: Install the binarytemple user
+    action: user name=binarytemple home=/srv/binarytemple state=present system=yes
+  - name: copy binarytemple.co.uk project to filesystem location
+    action: git repo="git@bitbucket.org:sentimental/binarytemple.co.uk.git" dest=/srv/binarytemple/repo version=master
+#  - name: ensure bottle is at latest version
+#    action: pip name=bottle use_mirrors=no 
+#    notify:
+#    - installed bottle
+#  - name: Copy upstart script into location
+#    action: copy src=/common/ansible-conf/remote/etc/init/url-chooser.conf  dest=/etc/init/url-chooser.conf owner=root group=root mode=644
+#  - name: Ensure service running
+#    action: service name=url-chooser state=started   
+#  handlers:
+#    - name: installed bottle
+#      action: mail msg='${ansible_hostname} installed' subject='Ansible-report Bottle installation' to='irishjava@gmail.com' 

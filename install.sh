@@ -7,7 +7,7 @@ fi
 function installfile() {
     fname=$1
     dname=$(echo $fname | sed -e 's_\(^.*\/\).*_\1_')
-    sfile="files/$( echo $fname | sed -e 's_^/__' )"
+    sfile="local/$( echo $fname | sed -e 's_^/__' )"
     if [[ "$fname" =~ ^\/.* ]] 
         then 
             if [[ -f $sfile ]] 
