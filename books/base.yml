@@ -8,12 +8,6 @@
   tasks:
   - name: add templated marker file
     action: template src=../remote/etc/marker.j2 dest=/etc/marker.ansible    
-  - name: ensure mail is installed 
-    action: apt name=mailutils
-    notify:
-    - installed mail
-  - name: install git 
-    action: apt pkg=git state=installed  
   - name: Ensure Bitbucket compatible .ssh/known_hosts is present
     action: copy 
             src="../remote/root/.ssh/known_hosts" 
@@ -31,6 +25,3 @@
   handlers:
     - name: generated ssh keys
       action: mail msg='${ansible_hostname} ssh keys generated' subject='Ansible-report ssh keys generated ' to='irishjava@gmail.com'  attach="/root/.ssh/id_rsa.pub"
-    - name: installed mail
-      action: mail msg='${ansible_hostname} installed' subject='Ansible-report Bottle installation' to='irishjava@gmail.com' 
-
