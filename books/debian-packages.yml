@@ -16,4 +16,5 @@
     - tmux
     - postfix
     - mailutils
+    - iptables-persistent
     only_if: $is_debian
