@@ -1,0 +1,15 @@
+---
+- include: base.yml
+- hosts: hastebin
+  user: root
+  tasks:
+  - name: install redis
+    action: apt name=redis state=installed
+#  - name: ensure bottle is at latest version
+#    action: pip name=bottle use_mirrors=no 
+#    notify:
+#    - installed bottle
+#  handlers:
+#    - name: installed bottle
+#      action: mail msg='${ansible_hostname} installed' subject='Ansible-report Bottle installation' to='irishjava@gmail.com' 
+##      Doesn't work
