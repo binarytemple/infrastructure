@@ -1,0 +1,31 @@
+---
+- include: srv.yml
+- hosts: binarytemple
+  user: root
+  tasks:
+  - name: copy poc_stm project to filesystem location
+    action: git repo="git clone git@bitbucket.org:sentimental/poc_stm.git" dest=/srv/binarytemple/poc_stm_repo version=master
+#  - name: symbolically link /srv/binarytemple.co.uk to /srv/binarytemple/repo/srv 
+#    action: file src=/srv/binarytemple/repo/srv dest=/srv/binarytemple.co.uk owner=root group=root state=link
+#  - name: create etc lightttpd directories 
+#    action: file path=$item mode=0755 state=directory
+#    with_items: 
+#    - /etc/lighttpd
+#    - /etc/lighttpd/conf-available
+#    - /etc/lighttpd/conf-enabled
+#  - name: create /etc/lightppd.conf 
+#    action: template src="../remote/etc/lighttpd/lighttpd.conf" dest="/etc/lighttpd/lighttpd.conf" owner=root group=root mode=644
+#    notify:
+#    - restart lighttpd
+#  - name: link necessary templates
+#    action: file src="/etc/lighttpd/conf-available/${item}" dest="/etc/lighttpd/conf-enabled/${item}" owner=root group=root state=link 
+#    with_items:
+#    - '10-accesslog.conf'
+#    - '10-fastcgi.conf'
+#    - '10-simple-vhost.conf'
+#    - '10-usertrack.conf'
+#    notify:
+#    - restart lighttpd
+  handlers:
+    - name: restart lighttpd
+      action: service name=lighttpd state=restarted
