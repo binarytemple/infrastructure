@@ -1,15 +1,23 @@
 ---
-- include: base.yml
+- include: debian-experimental.yml
 - hosts: hastebin
   user: root
+  vars:
+  - is_debian: "'${ansible_distribution}' == 'Debian'"
+
   tasks:
-  - name: install redis
-    action: apt name=redis state=installed
-#  - name: ensure bottle is at latest version
-#    action: pip name=bottle use_mirrors=no 
-#    notify:
-#    - installed bottle
-#  handlers:
-#    - name: installed bottle
-#      action: mail msg='${ansible_hostname} installed' subject='Ansible-report Bottle installation' to='irishjava@gmail.com' 
-##      Doesn't work
+  - name: install redis-server
+    action: apt name=redis-server state=installed
+
+  - name: download haste-server
+    action: git repo=git://github.com/sentimentalbryan/haste-server.git dest=/srv/haste-server version=abb49f2cf33560cd9cb0b549c9c8a570dfdad81f 
+
+  - name: install nodejs 
+    action: apt name=$item state=latest update_cache=yes cache_valid_time=3600 
+    with_items:
+    - nodejs
+    - npm
+    only_if: $is_debian
+
+  - name: install node requirements
+    action: npm path=/srv/haste-server state=latest
