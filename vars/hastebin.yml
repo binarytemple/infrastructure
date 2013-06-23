@@ -1,0 +1,7 @@
+name : hastebin
+run_directory : /srv/haste-server/
+provides : hastebin
+short_description : hastebin 
+description : hastebin
+daemon_full_path : /usr/bin/nodejs
+daemon_args : server.js

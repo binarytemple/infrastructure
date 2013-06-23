@@ -1,10 +1,11 @@
 ---
 - include: debian-experimental.yml
 - hosts: hastebin
+  vars_files:
+   - ../vars/hastebin.yml
   user: root
   vars:
   - is_debian: "'${ansible_distribution}' == 'Debian'"
-
   tasks:
   - name: install redis-server
     action: apt name=redis-server state=installed
@@ -19,5 +20,19 @@
     - npm
     only_if: $is_debian
 
+  - name: install sysv init script
+    action: template src=../templates/debian-init-template.j2 dest=/etc/init.d/hastebin owner=root group=root mode=0755  
+ 
+  - name: ensure hastebin running
+    action: service name=hastebin enabled=true state=running
+
+  - name: install iptables rules 
+    action: template src=../templates/iptables-hastebin.j2 dest=/etc/iptables/rules.v4 owner=root group=root mode=0755  
+    notify: reload iptables    
+
   - name: install node requirements
     action: npm path=/srv/haste-server state=latest
+
+  handlers:
+    - name: reload iptables
+      action: service name=iptables-persistent state=reloaded
