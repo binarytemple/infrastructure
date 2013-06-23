@@ -27,7 +27,7 @@
     action: service name=hastebin enabled=true state=running
 
   - name: install iptables rules 
-    action: template src=../templates/iptables-hastebin.j2 dest=/etc/iptables/rules.v4 owner=root group=root mode=0755  
+    action: template src=../templates/iptables-hastebin.j2 dest=/etc/iptables/rules.v4 owner=root group=root mode=0600
     notify: reload iptables    
 
   - name: install node requirements
