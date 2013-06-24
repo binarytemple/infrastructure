@@ -35,4 +35,4 @@
 
   handlers:
     - name: reload iptables
-      action: service name=iptables-persistent state=reloaded
+      action: service name=iptables-persistent state=reloaded enabled=true
