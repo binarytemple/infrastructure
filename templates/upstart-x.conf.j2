@@ -1,0 +1,22 @@
+# /etc/init/{{name}}.conf
+
+description "{{description}}"
+author      "{{author}}"
+
+start on (local-filesystems and net-device-up IFACE=eth0)
+
+stop on shutdown
+
+# Automatically Respawn:
+respawn
+respawn limit 99 5
+
+script
+    export HOME="{{user_home}}"
+    sudo -u {{user}} {{cmd}}
+end script
+
+post-start script
+   # Optionally put a script here that will notify you node has (re)started
+   exec {{post_start_cmd}}
+end script
