@@ -6,7 +6,7 @@
   - name: Install the binarytemple user
     action: user name=binarytemple home=/srv/binarytemple state=present system=yes
   - name: copy binarytemple.co.uk project to filesystem location
-    action: git repo="git@bitbucket.org:sentimental/binarytemple.co.uk.git" dest=/srv/binarytemple/repo version=master
+    action: git repo="git@bitbucket.org:binarytemple/binarytemple.co.uk.git" dest=/srv/binarytemple/repo version=master
   - name: symbolically link /srv/binarytemple.co.uk to /srv/binarytemple/repo/srv 
     action: file src=/srv/binarytemple/repo/srv dest=/srv/binarytemple.co.uk owner=root group=root state=link
   - name: create etc lightttpd directories 
