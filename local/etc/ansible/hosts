@@ -5,5 +5,4 @@ binarytemple.co.uk  ansible_ssh_user=root
 binarytemple.co.uk ansible_ssh_user=root
 
 [url-chooser]
-
-97.107.130.209 ansible_ssh_user=root
+binarytemple.co.uk ansible_ssh_user=root

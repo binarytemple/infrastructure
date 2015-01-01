@@ -5,7 +5,7 @@
    - ../vars/hastebin.yml
   user: root
   vars:
-  - is_debian: "'${ansible_distribution}' == 'Debian'"
+  - is_debian: ${ansible_distribution} == 'Debian'
   tasks:
   - name: install redis-server
     action: apt name=redis-server state=installed
@@ -18,7 +18,7 @@
     with_items:
     - nodejs
     - npm
-    only_if: $is_debian
+    when: $is_debian
 
   - name: install sysv init script
     action: template src=../templates/debian-init-template.j2 dest=/etc/init.d/hastebin owner=root group=root mode=0755  

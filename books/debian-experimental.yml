@@ -3,17 +3,17 @@
 - hosts: hastebin
   user: root
   vars:
-  - is_debian: "'${ansible_distribution}' == 'Debian'"
+  - is_debian: ${ansible_distribution} == 'Debian'
   tasks:
-  - name: add the experimental repo (1)
-    action: lineinfile dest=/etc/apt/sources.list line="deb http://http.debian.net/debian unstable main contrib non-free" regexp="^deb .*debian unstable.*"
-    only_if: $is_debian
-    register: enabled_debian_experimental
-
-  - name: add the experimental repo (2)
-    action: lineinfile dest=/etc/apt/sources.list line="deb-src http://http.debian.net/debian unstable main contrib non-free" regexp="^deb-src .*debian unstable.*"
-    only_if: $is_debian
-
-  - name: update apt cache
-    action: apt update_cache=yes
-    when_changed: $enabled_debian_experimental
+#  - name: add the experimental repo (1)
+#    action: lineinfile dest=/etc/apt/sources.list line="deb http://http.debian.net/debian unstable main contrib non-free" regexp="^deb .*debian unstable.*"
+#    when: $is_debian
+#    register: enabled_debian_experimental
+#
+#  - name: add the experimental repo (2)
+#    action: lineinfile dest=/etc/apt/sources.list line="deb-src http://http.debian.net/debian unstable main contrib non-free" regexp="^deb-src .*debian unstable.*"
+#    when: $is_debian
+#
+#  - name: update apt cache
+#    action: apt update_cache=yes
+#    when_changed: $enabled_debian_experimental

@@ -2,20 +2,20 @@
 - hosts: all
   user: root
   vars:
-  - is_debian: "'${ansible_distribution}' == 'Debian'"
+  - is_debian: ${ansible_distribution} == 'Debian'
   tasks:
-  - name: install multiple packages
-    action: apt name=$item state=latest update_cache=yes cache_valid_time=3600 
-    with_items:
-    - git
-    - vim 
-    - netcat 
-    - ngrep
-    - tcpdump 
-    - emacs 
-    - zsh 
-    - tmux
-    - postfix
-    - mailutils
-    - iptables-persistent
-    only_if: $is_debian
+#  - name: install multiple packages
+#    action: apt name=$item state=latest update_cache=yes cache_valid_time=3600 
+#    with_items:
+#    - git
+#    - vim 
+#    - netcat 
+#    - ngrep
+#    - tcpdump 
+#    - emacs 
+#    - zsh 
+#    - tmux
+#    - postfix
+#    - mailutils
+#    - iptables-persistent
+#    when: $is_debian
