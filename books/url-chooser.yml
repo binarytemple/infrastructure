@@ -22,4 +22,4 @@
     when: is_ubuntu == True
   handlers:
     - name: installed bottle
-      action: mail msg='${ansible_hostname} installed' subject='Ansible-report Bottle installation' to='irishjava@gmail.com' 
+      action: mail msg='{{ansible_hostname}} installed' subject='Ansible-report Bottle installation' to='irishjava@gmail.com' 

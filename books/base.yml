@@ -21,6 +21,6 @@
     - generated ssh keys
   handlers:
     - name: ssh updated
-      action: mail msg='${ansible_hostname} ssh updated' subject='Bitbucket compatible .ssh/known_hosts added' to='irishjava@gmail.com'
+      action: mail msg='{{ansible_hostname}} ssh updated' subject='Bitbucket compatible .ssh/known_hosts added' to='irishjava@gmail.com'
     - name: generated ssh keys
-      action: mail msg='${ansible_hostname} ssh keys generated' subject='Ansible-report ssh keys generated ' to='irishjava@gmail.com'  attach="/root/.ssh/id_rsa.pub"
+      action: mail msg='{{ansible_hostname}} ssh keys generated' subject='Ansible-report ssh keys generated ' to='irishjava@gmail.com'  attach="/root/.ssh/id_rsa.pub"

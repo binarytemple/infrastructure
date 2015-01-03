@@ -9,4 +9,4 @@
     - created srv directory
   handlers:
     - name: created srv directory
-      action: mail msg='${ansible_hostname} created /srv' subject='ansible /srv created' to='irishjava@gmail.com' 
+      action: mail msg='{{ansible_hostname}} created /srv' subject='ansible /srv created' to='irishjava@gmail.com' 
