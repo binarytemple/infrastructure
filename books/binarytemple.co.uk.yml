@@ -3,12 +3,27 @@
 - hosts: binarytemple
   user: root
   tasks:
+
+  - name: create website directories 
+    action: file path=$item mode=0755 state=directory
+    with_items: 
+    - /srv/binarytemple
+    - /srv/lolbags
+
   - name: Install the binarytemple user
     action: user name=binarytemple home=/srv/binarytemple state=present system=yes
   - name: copy binarytemple.co.uk project to filesystem location
     action: git repo="git@bitbucket.org:binarytemple/binarytemple.co.uk.git" dest=/srv/binarytemple/repo version=master
   - name: symbolically link /srv/binarytemple.co.uk to /srv/binarytemple/repo/srv 
     action: file src=/srv/binarytemple/repo/srv dest=/srv/binarytemple.co.uk owner=root group=root state=link
+
+  - name: Install the lolbags user
+    action: user name=lolbags home=/srv/lolbags state=present system=yes
+  - name: copy lolbags.com project to filesystem location
+    action: git repo="git@github.com:binarytemple/lolbags.github.io.git" dest=/srv/lolbags/repo version=gh-pages
+  - name: symbolically link /srv/lolbags.com to /srv/lolbags/repo
+    action: file src=/srv/lolbags/repo dest=/srv/lolbags.com owner=root group=root state=link
+
   - name: create etc lightttpd directories 
     action: file path=$item mode=0755 state=directory
     with_items: 
@@ -20,31 +35,31 @@
     notify:
     - restart lighttpd
   - name: install multiple templates
-    action: template src="../remote/etc/lighttpd/conf-available/{{item.skey}}" dest="/etc/lighttpd/conf-available/{{item.value}}" owner=root group=root mode=644 backup=no
+    action: template src="../remote/etc/lighttpd/conf-available/{{item}}.j2" dest="/etc/lighttpd/conf-available/{{item}}" owner=root group=root mode=644 backup=no
     with_items: 
-     - { skey : '05-auth.conf.j2'              ,value : '05-auth.conf'            }
-     - { skey : '10-accesslog.conf.j2'         ,value : '10-accesslog.conf'       } 
-     - { skey : '10-cgi.conf.j2'               ,value : '10-cgi.conf'             }
-     - { skey : '10-evasive.conf.j2'           ,value : '10-evasive.conf'         }
-     - { skey : '10-evhost.conf.j2'            ,value : '10-evhost.conf'          }
-     - { skey : '10-expire.conf.j2'            ,value : '10-expire.conf'          }
-     - { skey : '10-fastcgi.conf.j2'           ,value : '10-fastcgi.conf'         }
-     - { skey : '10-flv-streaming.conf.j2'     ,value : '10-flv-streaming.conf'   }
-     - { skey : '10-no-www.conf.j2'            ,value : '10-no-www.conf'          }
-     - { skey : '10-proxy.conf.j2'             ,value : '10-proxy.conf'           }
-     - { skey : '10-rrdtool.conf.j2'           ,value : '10-rrdtool.conf'         }
-     - { skey : '10-simple-vhost.conf.j2'      ,value : '10-simple-vhost.conf'    }
-     - { skey : '10-ssi.conf.j2'               ,value : '10-ssi.conf'             }
-     - { skey : '10-ssl.conf.j2'               ,value : '10-ssl.conf'             }
-     - { skey : '10-status.conf.j2'            ,value : '10-status.conf'          }
-     - { skey : '10-userdir.conf.j2'           ,value : '10-userdir.conf'         }
-     - { skey : '10-usertrack.conf.j2'         ,value : '10-usertrack.conf'       }
-     - { skey : '15-fastcgi-php.conf.j2'       ,value : '15-fastcgi-php.conf'     }
-     - { skey : '90-debian-doc.conf.j2'        ,value : '90-debian-doc.conf'      }
+     - '05-auth.conf'
+     - '10-accesslog.conf'
+     - '10-cgi.conf'
+     - '10-evasive.conf'
+     - '10-evhost.conf'
+     - '10-expire.conf'
+     - '10-fastcgi.conf'
+     - '10-flv-streaming.conf'
+     - '10-no-www.conf'
+     - '10-proxy.conf'
+     - '10-rrdtool.conf'
+     - '10-simple-vhost.conf'
+     - '10-ssi.conf'
+     - '10-ssl.conf'
+     - '10-status.conf'
+     - '10-userdir.conf'
+     - '10-usertrack.conf'
+     - '15-fastcgi-php.conf'
+     - '90-debian-doc.conf'
     notify:
     - restart lighttpd
   - name: link necessary templates
-    action: file src="/etc/lighttpd/conf-available/${item}" dest="/etc/lighttpd/conf-enabled/${item}" owner=root group=root state=link 
+    action: file src="/etc/lighttpd/conf-available/{{item}}" dest="/etc/lighttpd/conf-enabled/{{item}}" owner=root group=root state=link 
     with_items:
     - '10-accesslog.conf'
     - '10-fastcgi.conf'
@@ -55,15 +70,15 @@
   - name: make postfix dir 
     action: file path=/etc/postfix mode=0755 state=directory
   - name: copy postfix templates
-    action: template src="../remote/etc/postfix/{{item.key}}" dest="/etc/postfix/{{item.value}}" owner=root group=root mode=644 backup=no
+    action: template src="../remote/etc/postfix/{{item}}.j2" dest="/etc/postfix/{{item}}" owner=root group=root mode=644 backup=no
     with_items:
-     - { key : 'dynamicmaps.cf.j2'         , value : 'dynamicmaps.cf'     }
-     - { key : 'main.cf.j2'                , value : 'main.cf'            }  
-     - { key : 'master.cf.j2'              , value : 'master.cf'          }
-     - { key : 'postfix-files.j2'          , value : 'postfix-files'      }
-     - { key : 'postfix-script.j2'         , value : 'postfix-script'     }
-     - { key : 'post-install.j2'           , value : 'post-install'       }
-     - { key : 'virtual.j2'                , value : 'virtual'            }
+     - 'dynamicmaps.cf'
+     - 'main.cf'
+     - 'master.cf'
+     - 'postfix-files'
+     - 'postfix-script'
+     - 'post-install'
+     - 'virtual'
     notify:
     - postfix regenerate
   handlers:
