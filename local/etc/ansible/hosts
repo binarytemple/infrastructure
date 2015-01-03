@@ -1,6 +1,9 @@
 [binarytemple]
 binarytemple.co.uk  ansible_ssh_user=root
 
+[hastebin]
+binarytemple.co.uk  ansible_ssh_user=root
+
 [webservers]
 binarytemple.co.uk ansible_ssh_user=root
 
